@@ -1,35 +1,56 @@
-		<!DOCTYPE html>
-		<html>
-		<head>
-			<title>Node.js Chat with websockets.</title>
-			<meta charset="utf-8">
-			<script src="bundle.js"></script>
-			<link rel="stylesheet" type="text/css" href="/style.css" />
-		</head>
-		<body>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Node.js Chat with websockets.</title>
+	<meta charset="utf-8">
+	<script src="bundle.js"></script>
+	<link rel="stylesheet" type="text/css" href="/style.css" />
 
-<ul class="sidenav">
-  <li><a class="active" href="#">Online: <span id='numclients'>0</span> persons</a></li>
-  <li><div class="fake-link">Only Checkbox <input type="checkbox" id="isAgeSelected"/></div></li>
-</ul>
+	
+	<script src="jquery-3.3.1.min.js"></script>
+<script>
 
-<div class="content">
-<a href="#" id="subject" data-type="fiction">Text</a>
-<button onclick="alert('Moin')">Click me</button>
-<ul id="content"></ul>
-  <h2>Responsive Sidenav Example</h2>
-  <p>This example use media queries to transform the sidenav to a top navigation bar when the screen size is 900px or less.</p>
-  <p>We have also added a media query for screens that are 400px or less, which will vertically stack and center the navigation links.</p>
-  <p>You will learn more about media queries and responsive web design later in our CSS Tutorial.</p>
-  <h3>Resize the browser window to see the effect.</h3>
-</div>
+$(document).ready(function(){
+	$('#sidebarCheckbox').click(function(){
+		var channelName = $(this).text();
+		$(this).toggleClass("active");
+		var isActive = $(this).hasClass("active");
+		//alert("Clicked: "+channelName+" is active: "+isActive);
+    });
+
+});
+</script>
+
+</head>
+
+
+
+<body>
+	<ul class="sidenav">
+		<li><a class="active" href="#">Online: <span id='numclients'>0</span> persons</a></li>
+		<li><div id="sidebarCheckbox" class="fake-link">Sport</div></li>
+		<li>
 			
-			<footer>
-				<form id="sendform">
-					<input id="name" type="text" placeholder="Name" />
-					<input id="text" type="text" placeholder="write something..." />
-					<input id="send" type="submit" class="btn" value="send" />
-				</form>
-			</footer>
-		</body>
-		</html>
+		</li>
+	</ul>
+
+
+
+	<div class="content">
+		<ul id="content"></ul>
+		<h2>Responsive Sidenav Example</h2>
+		<p>This example use media queries to transform the sidenav to a top navigation bar when the screen size is 900px or less.</p>
+		<p>We have also added a media query for screens that are 400px or less, which will vertically stack and center the navigation links.</p>
+		<p>You will learn more about media queries and responsive web design later in our CSS Tutorial.</p>
+		<h3>Resize the browser window to see the effect.</h3>
+	</div>
+
+	<footer>
+		<form id="sendform">
+			<input id="name" type="text" placeholder="Name" />
+			<input id="text" type="text" placeholder="write something..." />
+			<input id="send" type="submit" class="btn" value="send" />
+		</form>
+	</footer>
+</body>
+</html>

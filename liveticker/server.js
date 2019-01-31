@@ -18,6 +18,10 @@ app.get('/', function (req, res) {
 	res.sendfile(__dirname + '/public/index.html');
 });
 
+app.get('/author', function (req, res) {
+	res.sendfile(__dirname + '/public/index.html');
+});
+
 // Ajax route: Send number of currently active clients (just the number)
 app.get('/numclients', function (req, res) {
 	res.send(200, io.engine.clientsCount);

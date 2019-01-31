@@ -5,6 +5,7 @@ import './style.css';
 
 $(document).ready(function(){
 	// connect to webSocket
+	alert("Das Client Script Functioniert nun korrekt...");
 	var socket = io.connect();
 
 	// incoming message
@@ -13,7 +14,7 @@ $(document).ready(function(){
 		var now = new Date(data.time);
 		// construct html string for chat message and add to #content list
 		$('#content').append(
-            sprintf("<li>[%02d:%02d:%02d] <b>%s: </b> <span>%s</span></li>",
+            sprintf("<li>Test: [%02d:%02d:%02d] <b>%s: </b> <span>%s</span></li>",
                 now.getHours(), now.getMinutes(), now.getSeconds(),
                 data.name  || '', data.text));
 		// scroll down (broken)
@@ -23,8 +24,8 @@ $(document).ready(function(){
 	// send a message (submit handler for html form)
 	$('#sendform').submit(function (event) {
 	    // send (emit) a 'chat' event to server
-		socket.emit('chat', { name: $('#name').val(), text: $('#text').val() });
-		$('#text').val('');
+		socket.emit('chat', { name: "Name: "+$('#name').val(), text: $('#text').val() });
+		$('#text').val('Beispieltext');
 	    event.preventDefault();
     });
 
