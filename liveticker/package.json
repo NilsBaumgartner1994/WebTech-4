@@ -7,9 +7,9 @@
 	},
 	"dependencies": {
 		"css-loader": "latest",
-		"express": "latest",
+		"express": "^4.16.4",
 		"jquery": "latest",
-		"socket.io": "latest",
+		"socket.io": "^2.2.0",
 		"sprintf-js": "latest",
 		"style-loader": "latest"
 	},
