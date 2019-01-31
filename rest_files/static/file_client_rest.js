@@ -10,21 +10,24 @@
 //    else: errorhandler(statuscode, parsed_data)
 //
 function ajax(method, url, body, successhandler, errorhandler) {
-    oReq = new XMLHttpRequest();
-    oReq.addEventListener("load", function () {
-        var data = JSON.parse(oReq.responseText);
-        if (oReq.status==200) {
-            successhandler && successhandler(data); // call successhandler if given
-        } else {
-            errorhandler && errorhandler(oReq.status, data);
-        }
-    });
-    oReq.open(method, url);
-    if (method == 'POST' || method == 'PUT') {
-        oReq.send(JSON.stringify(body));
-    } else {
-        oReq.send();
-    }
+    console.log("Start Ajax Call");
+    var Success = false;
+        $.ajax({
+            type: method,
+            url: url,
+            dataType: "text",
+            data: JSON.stringify(body),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                console.log("Success of Ajax Call");
+                successhandler && successhandler(data); 
+            },
+            error: function (textStatus, errorThrown) {
+                console.log("Error of Ajax Call");
+                errorhandler && errorhandler(textStatus, errorThrown);
+            }
+
+        });
 }
 
 // fetch mustache template string from DOM tree, render and insert into dom tree (#content)
@@ -40,6 +43,7 @@ function render_error(data) {
 
 // fetch a list of files and display it
 function list_files() {
+    alert("List Files");
     ajax("GET", base_url+'/files', {}, function (data) {
         render('file_list', data);
     }, render_error);
@@ -62,6 +66,7 @@ function click_content(event) {
 var base_url='http://localhost:8080';
 
 window.addEventListener("DOMContentLoaded", function () {
+    alert("Dom Loaded");
     document.querySelector("#nav_list").addEventListener("click", list_files);
     document.querySelector('#content').addEventListener("click", click_content, true); // true: use capture phase!
     list_files();
