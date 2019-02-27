@@ -8,9 +8,11 @@
         #nav li {display: block; }
         #nav { padding:20px; font-size: 200%; background-color: #2aabd2; }
         .filecontent { width:50%; padding: 5px; border: 1px solid grey; }
+        #filename { width:50%; padding: 5px; border: 1px solid grey; }
         a:link, a:visited { color: black; }
     </style>
     <!-- we need two javascript files: mustache library and the client code -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="mustache.js"></script>
     <script src="file_client_rest.js"></script>
 
@@ -20,7 +22,7 @@
         <ul>
         {{! remember mustache syntax: { { #files ... /files } } iterates through a list, { { . } } references the current element }}
         {{#files}}
-           <li><a data-readfile='{{.}}' href='#'>{{.}}</a> (<a href="#" data-deletefile='{{url}}'>Löschen</a>)</li>
+           <li><a data-readfile='{{.}}' href='#'>{{.}}</a> (<a href="#" data-deletefile='{{.}}'>Löschen</a>)</li>
         {{/files}}
         </ul>
         <p>Aktionen: <a href="#" data-createfile="1">Neue Datei</a></p>
@@ -33,8 +35,14 @@
 
     <script id="file_read" type="x-tmpl-mustache">
         <h1>Datei <i>{{id}}</i></h1>
-        <p class="filecontent">{{content}}<p>
+        <p><textarea class="filecontent">{{content}}</textarea></p>
         <p>Aktionen: <a href="#" data-editfile='{{url}}'>Bearbeiten</a> <a href="#" data-deletefile='{{url}}'>Löschen</a></p>
+    </script>
+
+    <script id="file_create" type="x-tmpl-mustache">
+        <h3>Dateiname: <input type="text" id="filename"></input></h3>
+        <p>Inhalt: <textarea class="filecontent"></textarea></p>
+        <p>Aktionen: <a href="#" data-makefile='1'>Erstellen</a></p>
     </script>
 </head>
 

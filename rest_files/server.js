@@ -70,6 +70,7 @@ function get_file(req, res, next) {
 function put_file(req, res, next) {
 // write body content to file
     var filename = construct_path(req.params['id'] || undefined);
+    console.log(req.body.content);
     if (req.body.content) {  // application/x-www-form-urlencoded
         fs.writeFile(filename, req.body.content, function (err, data) {
             if (err) return next(err);
@@ -119,19 +120,17 @@ function post_file(req, res, next) {
 function delete_file(req, res, next) {
     // delete File if content
     var filename = construct_path(req.params['id'] || undefined);
-    if (req.body.content) {  // application/x-www-form-urlencoded
-        if (fs.existsSync(filename)) {
-            fs.unlink(filename, function (err) {
-                if (err) next(err);
-                res.sendStatus(204);
-            });
-        }
-        else {
-            res.sendStatus(404);
-        }
-    } else {
-        res.sendStatus(400);
+
+    if (fs.existsSync(filename)) {
+        fs.unlink(filename, function (err) {
+            if (err) next(err);
+            res.sendStatus(204);
+        });
     }
+    else {
+        res.sendStatus(404);
+    }
+
 }
 
 // -------------------------------------------
@@ -146,6 +145,7 @@ app.use(bodyParser.urlencoded({extended: true}))  ; // enables body parsing of a
 
 // logging middleware
 app.use(function (req,res, next) {
+   console.log(req);
    accesslog(req,res);
    next();
 });
