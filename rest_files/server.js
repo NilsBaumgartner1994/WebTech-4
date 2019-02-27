@@ -2,6 +2,7 @@
 // builtin libraries
 const fs = require('fs');  // file system access (node.js builtin)
 const path = require('path');  // path handling functions (node.js builtin)
+const crypto = require("crypto");
 
 // http framework
 const express = require('express');  // express js framework (installed via npm)
@@ -67,7 +68,7 @@ function get_file(req, res, next) {
 
 // UPDATE or CREATE file
 function put_file(req, res, next) {
-    // write body content to file
+// write body content to file
     var filename = construct_path(req.params['id'] || undefined);
     if (req.body.content) {  // application/x-www-form-urlencoded
         fs.writeFile(filename, req.body.content, function (err, data) {
@@ -80,10 +81,58 @@ function put_file(req, res, next) {
 }
 
 // CREATE FILE
-// ... add ...
+function post_file(req, res, next) {
+    var filename = "";
+    var id = "";
+    if (!req.params['id'] || req.params['id'] === ""){
+        while (filename === "" || fs.existsSync(filename)){
+            id = crypto.randomBytes(20).toString('hex');
+            filename = construct_path(id || undefined);
+        }
+    }
+    else {
+        id = req.params['id'];
+        filename = construct_path(id || undefined);
+    }
+    // create File with content
+
+    if (req.body.content) {  // application/x-www-form-urlencoded
+        if (fs.existsSync(filename)) {
+            res.sendStatus(405);
+        }
+        else {
+            fs.writeFile(filename, req.body.content, function (err, data) {
+                if (err) return next(err);
+                res.json({  // construct and send json representation of file
+                    id: id,
+                    url: absurl("files/" + id),
+                    content: req.body.content
+                });
+            });
+        }
+    } else {
+        res.sendStatus(400);
+    }
+}
 
 // DELETE FILE
-// ... add ...
+function delete_file(req, res, next) {
+    // delete File if content
+    var filename = construct_path(req.params['id'] || undefined);
+    if (req.body.content) {  // application/x-www-form-urlencoded
+        if (fs.existsSync(filename)) {
+            fs.unlink(filename, function (err) {
+                if (err) next(err);
+                res.sendStatus(204);
+            });
+        }
+        else {
+            res.sendStatus(404);
+        }
+    } else {
+        res.sendStatus(400);
+    }
+}
 
 // -------------------------------------------
 // express setup and route configuration
@@ -121,6 +170,9 @@ app.get('/', function (req, res, next) {
 app.get('/files', list_files);  // GET collection
 app.get('/files/:id([0-9A-Za-z-]+)', get_file);  // READ single file content
 app.put('/files/:id([0-9A-Za-z-]+)', put_file);  // UPDATE single file content
+app.post('/files/:id([0-9A-Za-z-]+)', post_file); // CREATE file
+app.post('/files', post_file); // CREATE file
+app.delete('/files/:id([0-9A-Za-z-]+)', delete_file); // DELETE file
 
 // run the rest files app
 app.listen(8080, function () { console.log('File rest app listening on http://localhost:8080/'); });
