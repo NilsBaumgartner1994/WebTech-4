@@ -70,7 +70,6 @@ function get_file(req, res, next) {
 function put_file(req, res, next) {
 // write body content to file
     var filename = construct_path(req.params['id'] || undefined);
-    console.log(req.body.content);
     if (req.body.content) {  // application/x-www-form-urlencoded
         fs.writeFile(filename, req.body.content, function (err, data) {
             if (err) return next(err);
@@ -145,7 +144,6 @@ app.use(bodyParser.urlencoded({extended: true}))  ; // enables body parsing of a
 
 // logging middleware
 app.use(function (req,res, next) {
-   console.log(req);
    accesslog(req,res);
    next();
 });

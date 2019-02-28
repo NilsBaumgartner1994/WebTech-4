@@ -38,7 +38,7 @@ function render(templatename, data) {
         data = JSON.parse(data);
     }
     var output = Mustache.render(document.getElementById(templatename).innerHTML, data);
-    document.querySelector("#content").innerHTML=output;
+    $("#content")[0].innerHTML=output;
 }
 
 // shortcut for rendering errors
@@ -62,8 +62,7 @@ function read_file(file_url) {
 
 // read a particular file and display it
 function edit_file(file_url) {
-    console.log($('.filecontent').value);
-    ajax("PUT", file_url, {"content": document.querySelector('.filecontent').value}, function () {}, render_error, "application/x-www-form-urlencoded; charset=utf-8");
+    ajax("PUT", file_url, {"content": $('.filecontent')[0].value}, function () {}, render_error, "application/x-www-form-urlencoded; charset=utf-8");
 }
 
 // read a particular file and display it
@@ -73,10 +72,11 @@ function create_file(file_url) {
 
 function make_file(file_url) {
     var url = base_url + "/files";
-    if(document.querySelector('#filename').value){
-        url += "/" + document.querySelector('#filename').value;
+    if($('#filename')[0].value){
+        url += "/" + $('#filename')[0].value;
     }
-    ajax("POST", url, {"content": document.querySelector('.filecontent').value}, list_files, render_error, "application/x-www-form-urlencoded; charset=utf-8");
+    console.log($(".filecontent")[0].value);
+    ajax("POST", url, {"content": $(".filecontent")[0].value}, list_files, render_error, "application/x-www-form-urlencoded; charset=utf-8");
 }
 
 // read a particular file and display it
@@ -110,8 +110,8 @@ var base_url='http://localhost:8080';
 
 window.addEventListener("DOMContentLoaded", function () {
     console.log("Dom Loaded");
-    document.querySelector("#nav_list").addEventListener("click", list_files);
-    document.querySelector('#content').addEventListener("click", click_content, true); // true: use capture phase!
+    $("#nav_list").bind("click", list_files);
+    $('#content').bind("click", click_content);
     list_files();
 });
 
