@@ -3,32 +3,33 @@ import io from 'socket.io-client';  // the socket.io client
 import {sprintf} from 'sprintf-js';  // library with sprintf-string formatting function
 import './style.css';
 
+var socket;
 var subChannels = {};
 
-function subscribe(socket, channelName){
+function subscribe(channelName){
 	alert("Joining: "+channelName);
 	socket.join(channelName);
 	subChannels[channelName] = "Yes";
 }
 
-function unsubscribe(socket, channelName){
+function unsubscribe(channelName){
 	alert("Leaving: "+channelName);
 	socket.leave(channelName);
 	delete subChannels[channelName];
 }
 
-function myStart(socket){
+function myStart(){
 	$('.fake-link').click(function(){
 		var channelName = $(this).text();
 		$(this).toggleClass("active");
 		var isActive = $(this).hasClass("active");
 		if(isActive){
-			subscribe(socket, channelName);
+			subscribe(channelName);
 		} else {
-			unsubscribe(socket, channelName);
+			unsubscribe(channelName);
 		}
 
-		alert("Subscribed: "+Object.keys(subChannels));
+		alert("All Subscribed Rooms: "+Object.keys(subChannels));
     });
 }
 
@@ -36,8 +37,8 @@ function myStart(socket){
 
 $(document).ready(function(){
 	// connect to webSocket
-	alert("Das Client Script Functioniert nun korrekt...");
-	var socket = io.connect();
+	alert("Alles Geladen");
+	socket = io.connect();
 
 	myStart(socket);
 
