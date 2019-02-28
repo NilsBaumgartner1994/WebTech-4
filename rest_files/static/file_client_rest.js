@@ -60,21 +60,25 @@ function read_file(file_url) {
 }
 
 
-// read a particular file and display it
+// edit a file
 function edit_file(file_url) {
     ajax("PUT", file_url, {"content": $('.filecontent')[0].value}, function () {}, render_error, "application/x-www-form-urlencoded; charset=utf-8");
 }
 
-// read a particular file and display it
+// render create file
 function create_file(file_url) {
     render('file_create', null);
 }
 
+// create file
 function make_file(file_url) {
+
+    // build url
     var url = base_url + "/files";
     if($('#filename')[0].value){
         url += "/" + $('#filename')[0].value;
     }
+
     console.log($(".filecontent")[0].value);
     ajax("POST", url, {"content": $(".filecontent")[0].value}, list_files, render_error, "application/x-www-form-urlencoded; charset=utf-8");
 }
@@ -95,7 +99,7 @@ function click_content(event) {
     if (event.target.dataset['deletefile']) {
         delete_file(event.target.dataset['deletefile']);
     }
-    if (event.target.dataset['editfile']) {
+    if (event.target.dataset.editfile) {
         edit_file(event.target.dataset['editfile']);
     }
     if (event.target.dataset['createfile']) {
@@ -110,8 +114,8 @@ var base_url='http://localhost:8080';
 
 window.addEventListener("DOMContentLoaded", function () {
     console.log("Dom Loaded");
-    $("#nav_list").bind("click", list_files);
-    $('#content').bind("click", click_content);
+    $("#nav_list").click(list_files);
+    $('#content').click(click_content);
     list_files();
 });
 
