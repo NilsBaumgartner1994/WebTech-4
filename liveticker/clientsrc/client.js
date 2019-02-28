@@ -3,10 +3,43 @@ import io from 'socket.io-client';  // the socket.io client
 import {sprintf} from 'sprintf-js';  // library with sprintf-string formatting function
 import './style.css';
 
+
+var socket;
+var subChannels = {};
+
+function subscribe(channelName){
+	socket.join(channelName);
+	subChannels[channelName] = "Yes";
+}
+
+function unsubscribe(channelName){
+	socket.leave(channelName);
+	delete subChannels[channelName];
+}
+
+function myStart(){
+	$('.fake-link').click(function(){
+		var channelName = $(this).text();
+		$(this).toggleClass("active");
+		var isActive = $(this).hasClass("active");
+		if(isActive){
+			subscribe(channelName);
+		} else {
+			unsubscribe(channelName);
+		}
+
+		alert("Subscribed: "+Object.keys(subChannels));
+    });
+}
+
+
+
 $(document).ready(function(){
 	// connect to webSocket
 	alert("Das Client Script Functioniert nun korrekt...");
-	var socket = io.connect();
+	socket = io.connect();
+
+	myStart();
 
 	// incoming message
     // register event handler for 'chat' events

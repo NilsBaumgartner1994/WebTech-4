@@ -8,19 +8,6 @@
 
 	
 	<script src="jquery-3.3.1.min.js"></script>
-<script>
-
-$(document).ready(function(){
-	$('#sidebarCheckbox').click(function(){
-		var channelName = $(this).text();
-		$(this).toggleClass("active");
-		var isActive = $(this).hasClass("active");
-		//alert("Clicked: "+channelName+" is active: "+isActive);
-    });
-
-});
-</script>
-
 </head>
 
 
@@ -28,10 +15,10 @@ $(document).ready(function(){
 <body>
 	<ul class="sidenav">
 		<li><a class="active" href="#">Online: <span id='numclients'>0</span> persons</a></li>
-		<li><div id="sidebarCheckbox" class="fake-link">Sport</div></li>
-		<li>
-			
-		</li>
+		<li><div class="fake-link">Sport</div></li>
+		<li><div class="fake-link">Gaming</div></li>
+		<li><div class="fake-link">Work</div></li>
+		<li><div class="fake-link">OtherStuff</div></li>
 	</ul>
 
 
