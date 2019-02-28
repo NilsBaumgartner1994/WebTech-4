@@ -34,6 +34,7 @@ app.get('/numclients', function (req, res) {
 
 // someone connects
 io.sockets.on('connection', function (socket) {
+	//adding on new joining all channels
 	socket.emit('chat', { newchannels: channels, time: new Date(), text: 'Connected to server!' });  // send a welcome message
 	socket.on('chat', function (data) {  // react to future chat messages from that client
 		// send the text to all clients
