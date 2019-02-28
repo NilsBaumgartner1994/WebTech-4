@@ -8,6 +8,9 @@ var server = require('http').createServer(app)
 var io = require('socket.io').listen(server)
 var conf = require('./config.json');
 
+
+var channels = ["DynamicServerChannel","Uni","Home","Osnabrueck","Gaming"];
+
 server.listen(conf.port);
 
 // serve files from /public (output dir for webpack!)
@@ -31,14 +34,16 @@ app.get('/numclients', function (req, res) {
 
 // someone connects
 io.sockets.on('connection', function (socket) {
-	socket.emit('chat', { time: new Date(), text: 'Connected to server!' });  // send a welcome message
+	socket.emit('chat', { newchannels: channels, time: new Date(), text: 'Connected to server!' });  // send a welcome message
 	socket.on('chat', function (data) {  // react to future chat messages from that client
 		// send the text to all clients
-		io.sockets.emit('chat', { time: new Date(), name: data.name || 'anonymous', text: data.text });
+		io.sockets.emit('chat', { channel: data.channel, time: new Date(), name: data.name || 'anonymous', text: data.text });
 	});
+	/**
 	socket.on('disconnect', function () {
-		io.sockets.emit('chat', { time: new Date(), name: 'someone', text: 'left the chat' });
+		//io.sockets.emit('chat', { time: new Date(), name: 'someone', text: 'left the chat' });
 	})
+	*/
 });
 
 // tell console that server is up and running
