@@ -73,9 +73,12 @@ $(document).ready(function(){
 	//alert("Alles Geladen");
 	socket = io.connect();
 
+	var isAuthor = false;
+
 	var pathname = window.location.pathname; //get url name
 	if(pathname.includes("author")){ //super billiger Schreibschutz
 		//alert("Author");	
+		isAuthor = true;
 	} else {
 		$("#sendform").hide();
 	}
@@ -86,7 +89,7 @@ $(document).ready(function(){
 		if(data.newchannels){
 			addChannelsToSideBar(data.newchannels);
 		}
-		if(hasChannelSubscribed(data.channel)){
+		if(hasChannelSubscribed(data.channel) || isAuthor){
 			var now = new Date(data.time);
 			// construct html string for chat message and add to #content list
 			$('#content').append(
